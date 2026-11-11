@@ -1,0 +1,6 @@
+{
+  "name": "Atlassian Project Engine - Dynamic Gantt, Dependencies & Baselines",
+  "description": "Jira-style dynamic project schedule engine with Microsoft Project-grade dependency ripples, baseline comparison, critical path analysis, and real-time resource workload leveling.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
