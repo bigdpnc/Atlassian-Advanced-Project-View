@@ -1,0 +1,45 @@
+name: Deploy Forge App to Dev Space
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Build & Deploy to Atlassian Dev
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Vite frontend
+        run: npm run build
+
+      - name: Install Forge CLI
+        run: npm install -g @forge/cli@latest
+
+      - name: Deploy to Development Environment
+        env:
+          FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+          FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+        run: |
+          forge settings set usage-analytics true
+          forge deploy -e development
+
+      - name: Upgrade Installation on Dev Site
+        env:
+          FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+          FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+        run: |
+          forge install --upgrade --site newbtekdev.atlassian.net --product jira -e development --non-interactive
